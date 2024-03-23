@@ -1,6 +1,6 @@
-package br.com.giunei.gestao_vagas_front.service;
+package br.com.giunei.gestao_vagas_front.modules.candidate.service;
 
-import br.com.giunei.gestao_vagas_front.dto.Token;
+import br.com.giunei.gestao_vagas_front.modules.candidate.dto.Token;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -26,8 +26,6 @@ public class CandidateService {
         HttpEntity<Map<String, String>> request = new HttpEntity<>(data, headers);
 
         var result = rt.postForObject("http://localhost:8080/candidate/auth", request, Token.class);
-        System.out.println("Retorno da requisição");
-        System.out.println(result.getAccess_token());
 
         return result;
     }
