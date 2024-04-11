@@ -8,6 +8,7 @@
 </head>
 
 <body class="bg-gray-900 h-screen items-center flex justify-center">
+
 <form action="" class="flex gap-24" th:action="@{/candidate/signIn}" method="post">
     <div class="text-white max-w-80 text-6xl flex items-center">
         <p class="text-green-400">Gestão de Vagas</p>
@@ -23,8 +24,7 @@
         <p class="text-red-400" th:if="${error_message}" th:text="${error_message}"></p>
 
         <button class="bg-green-900 w-96 p-4 rounded hover:bg-green-700">Entrar</button>
-        <a href="" class="text-white block text-center underline underline-offset-2 hover:text-slate-400">
-            Crie sua conta</a>
+
     </div>
 </form>
 </body>

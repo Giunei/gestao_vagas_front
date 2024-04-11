@@ -1,0 +1,67 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cadastro do Candidato</title>
+</head>
+
+<body class="bg-gray-900 h-screen items-center flex justify-center">
+<form id="submitForm" class="flex gap-24" th:action="@{/candidate/create}" method="post"
+    th:object="${candidate}">
+
+    <div class="space-y-8 bg-stone-800 rounded-md p-20">
+        <p class="text-white">Candidato, crie o seu cadastro gratuitamente</p>
+        <input type="text" name="email" 
+        th:field="*{email}"
+        class="bg-gray-300 text-amber-600 text-xd
+            rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
+               placeholder="E-mail">
+        <input type="text" name="username" 
+        th:field="*{username}"
+        class="bg-gray-300 text-amber-600 text-xd
+            rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
+               placeholder="Usuário">
+        <input type="text" name="name" 
+        th:field="*{name}"
+        class="bg-gray-300 text-amber-600 text-xd
+            rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
+               placeholder="Digite seu nome">
+        <input id="password" type="password" name="password" 
+        th:field="*{password}"
+        class="bg-gray-300 text-amber-600 text-xd
+            rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
+               placeholder="Senha" >
+        <input id="confirmPassword" type="password" name="confirmPassword" class="bg-gray-300 text-amber-600 text-xd
+            rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
+               placeholder="Confirme sua senha" >
+        <textarea name="description" placeholder="Digite uma breve descrição sobre você" 
+            th:field="*{description}"    
+            class="bg-gray-300 text-amber-600 text-xd
+            rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"></textarea>
+
+        <p class="text-red-400 hidden" id="password_error">As senhas não conferem</p>
+        <p class="text-red-400" th:if="${error_message}" th:text="${error_message}"></p>
+
+        <button class="bg-green-900 w-96 p-4 rounded hover:bg-green-700">Cadastre-se</button>
+        <a href="/candidate/login" class="text-white block text-center underline underline-offset-2 hover:text-slate-400">
+            Login</a>
+    </div>
+</form>
+
+<script>
+    document.getElementById("submitForm").addEventListener("submit", (event) => {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+
+        if(password !== confirmPassword) {
+            document.getElementById("password_error").classList.remove("hidden");
+            event.preventDefault();
+        }
+    })
+</script>
+
+</body>
+
+</html>

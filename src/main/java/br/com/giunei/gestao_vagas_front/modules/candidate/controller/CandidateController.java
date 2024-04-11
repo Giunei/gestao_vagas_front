@@ -1,11 +1,15 @@
 package br.com.giunei.gestao_vagas_front.modules.candidate.controller;
 
+import br.com.giunei.gestao_vagas_front.modules.candidate.dto.CreateCandidateDTO;
 import br.com.giunei.gestao_vagas_front.modules.candidate.dto.JobDTO;
 import br.com.giunei.gestao_vagas_front.modules.candidate.dto.ProfileUserDTO;
 import br.com.giunei.gestao_vagas_front.modules.candidate.dto.Token;
+import br.com.giunei.gestao_vagas_front.modules.candidate.service.ApplyJobService;
 import br.com.giunei.gestao_vagas_front.modules.candidate.service.CandidateService;
+import br.com.giunei.gestao_vagas_front.modules.candidate.service.CreateCandidateService;
 import br.com.giunei.gestao_vagas_front.modules.candidate.service.FindJobsService;
 import br.com.giunei.gestao_vagas_front.modules.candidate.service.ProfileCandidateService;
+import br.com.giunei.gestao_vagas_front.utils.ErrorMessage;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,9 +43,36 @@ public class CandidateController {
     @Autowired
     private FindJobsService findJobsService;
 
+    @Autowired
+    private ApplyJobService applyJobService;
+
+    @Autowired
+    private CreateCandidateService createCandidateService;
+
+    private final String REDIRECT_LOGIN = "redirect:/candidate/login";
+
     @GetMapping("/login")
     public String login() {
         return "candidate/login";
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("candidate", new CreateCandidateDTO());
+        return "candidate/create";
+    }
+
+    @PostMapping("/create")
+    public String save(Model model, CreateCandidateDTO candidate) {
+        try {
+            this.createCandidateService.execute(candidate);
+
+        } catch (HttpClientErrorException ex) {
+            model.addAttribute("error_message", ErrorMessage.formatErrorMessage(ex.getResponseBodyAsString()));
+        }
+
+        model.addAttribute("candidate", candidate);
+        return "candidate/create";
     }
 
     @PostMapping("/signIn")
@@ -63,7 +94,7 @@ public class CandidateController {
 
         } catch (HttpClientErrorException e) {
             redirectAttributes.addFlashAttribute("error_message", "Usuário/Senha incorretos");
-            return "redirect:/candidate/login";
+            return REDIRECT_LOGIN;
         }
     }
 
@@ -78,7 +109,7 @@ public class CandidateController {
 
             return "candidate/profile";
         } catch (HttpClientErrorException e) {
-            return "redirect:/candidate/login";
+            return REDIRECT_LOGIN;
         }
 
     }
@@ -96,7 +127,7 @@ public class CandidateController {
             }
 
         } catch (HttpClientErrorException e) {
-            return "redirect:/candidate/login";
+            return REDIRECT_LOGIN;
         }
         return "candidate/jobs";
     }
@@ -104,8 +135,8 @@ public class CandidateController {
     @PostMapping("/jobs/apply")
     @PreAuthorize("hasRole('CANDIDATE')")
     public String applyJob(@RequestParam("jobId") UUID jobId) {
-        System.out.println("ID do job: " + jobId);
-        return "candidate/jobs";
+        this.applyJobService.execute(getToken(), jobId);
+        return "redirect:/candidate/jobs";
     }
 
     private String getToken() {
