@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Login do Candidato</title>
+    <title>Login da Empresa</title>
 </head>
 
-<body class="bg-gray-900 h-screen items-center flex justify-center">
+<body class="bg-indigo-950 h-screen items-center flex justify-center">
 
-<form action="" class="flex gap-24" th:action="@{/candidate/signIn}" method="post">
-    <div class="text-white max-w-80 text-6xl flex items-center">
+<form action="" class="flex gap-24" th:action="@{/company/signIn}" method="post">
+    <div class="text-white max-w-80 text-6xl flex flex-col items-center">
         <p class="text-green-400">Gestão de Vagas</p>
+        <br/>
+        <p class="text-green-400">Empresa</p>
     </div>
-    <div class="space-y-8 bg-stone-800 rounded-md p-20">
+    <div class="space-y-8 bg-stone-800/50 rounded-md p-20">
         <input type="text" name="username" class="bg-gray-300 text-amber-600 text-xd
             rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
                placeholder="Usuário">
@@ -24,8 +26,7 @@
         <p class="text-red-400" th:if="${error_message}" th:text="${error_message}"></p>
 
         <button class="bg-green-900 w-96 p-4 rounded hover:bg-green-700">Entrar</button>
-
-        <a href="/candidate/create" class="text-white block text-center underline underline-offset-2 hover:text-slate-400">
+        <a href="/company/create" class="text-white block text-center underline underline-offset-2 hover:text-slate-400">
             Crie sua conta</a>
     </div>
 </form>
