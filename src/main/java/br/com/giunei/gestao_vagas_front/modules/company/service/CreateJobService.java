@@ -1,6 +1,7 @@
 package br.com.giunei.gestao_vagas_front.modules.company.service;
 
 import br.com.giunei.gestao_vagas_front.modules.company.dto.CreateJobsDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,6 +13,9 @@ import java.util.UUID;
 @Service
 public class CreateJobService {
 
+    @Value("${host.api.gestao.vagas}")
+    private String hostAPIGestaoVagas;
+
     public String execute(CreateJobsDTO jobs, String token) {
         RestTemplate rt = new RestTemplate();
 
@@ -21,6 +25,8 @@ public class CreateJobService {
 
         HttpEntity<CreateJobsDTO> request = new HttpEntity<>(jobs, headers);
 
-        return rt.postForObject("http://localhost:8080/company/job/", request, String.class);
+        String url = hostAPIGestaoVagas.concat("/company/job/");
+
+        return rt.postForObject(url, request, String.class);
     }
 }

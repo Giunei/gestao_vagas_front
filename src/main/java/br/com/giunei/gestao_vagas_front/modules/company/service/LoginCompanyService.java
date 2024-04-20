@@ -1,6 +1,7 @@
 package br.com.giunei.gestao_vagas_front.modules.company.service;
 
 import br.com.giunei.gestao_vagas_front.modules.candidate.dto.Token;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,6 +13,9 @@ import java.util.Map;
 
 @Service
 public class LoginCompanyService {
+
+    @Value("${host.api.gestao.vagas}")
+    private String hostAPIGestaoVagas;
 
     public Token execute(String username, String password) {
         RestTemplate rt = new RestTemplate();
@@ -25,8 +29,8 @@ public class LoginCompanyService {
 
         HttpEntity<Map<String, String>> request = new HttpEntity<>(data, headers);
 
-        var result = rt.postForObject("http://localhost:8080/company/auth", request, Token.class);
+        String url = hostAPIGestaoVagas.concat("/company/auth");
 
-        return result;
+        return rt.postForObject(url, request, Token.class);
     }
 }

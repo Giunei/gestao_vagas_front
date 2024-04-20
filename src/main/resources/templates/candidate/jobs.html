@@ -40,10 +40,54 @@
         <form th:action="@{/candidate/jobs/apply}" method="post">
             <div th:each="job: ${jobs}" class="text-white bg-gray-800 rounded-lg p-4 mb-4 shadow-md text-justify">
                 <input type="hidden" name="jobId" th:value="${job.id}">
+                <input type="hidden" id="rating" name="rating" th:value="0">
+
                 <h3 th:text="${job.description}" class="font-bold"></h3>
                 <span th:text="${job.level}" class="block"></span>
                 <span class="mt-4 block font-bold">Benefícios</span>
                 <span th:text="${job.benefits}" class="block"></span>
+
+                <h2 class="mt-4 text-sky-500 flex justify-center">Avalie o que achou da descrição da vaga!</h2>
+
+                <div class="flex justify-center pt-2">
+                    <br/>
+                    <br/>
+                    <span onclick="avaliar(1)" class="star">★</span>
+                    <span onclick="avaliar(2)" class="star">★</span>
+                    <span onclick="avaliar(3)" class="star">★</span>
+                    <span onclick="avaliar(4)" class="star">★</span>
+                    <span onclick="avaliar(5)" class="star">★</span>
+
+                </div>
+
+                <script th:inline="javascript">
+                    function avaliar(num) {
+                        let stars = document.getElementsByClassName("star");
+                        remove();
+                        for (let i = 0; i < num; i++) {
+                            if (num == 1) cls = "one";
+                            else if (num == 2) cls = "two";
+                            else if (num == 3) cls = "three";
+                            else if (num == 4) cls = "four";
+                            else if (num == 5) cls = "five";
+                            stars[i].className = "star " + cls;
+                        }
+                        let ratingInput = document.getElementById("rating");
+                        ratingInput.value = num;
+                    }
+                </script>
+                <script th:inline="javascript">
+                    function remove() {
+                        let stars = document.getElementsByClassName("star");
+
+                        let i = 0;
+                        while (i < 5) {
+                            stars[i].className = "star";
+                            i++;
+                        }
+                    }
+                </script>
+
                 <div class="grid justify-items-center">
                     <button
                             class="bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded mt-4">Aplicar
@@ -56,5 +100,32 @@
 
 </div>
 </body>
+
+<style>
+.star {
+  font-size: 5vh;
+  cursor: pointer;
+}
+
+.one {
+  color: rgb(255, 0, 0);
+}
+
+.two {
+  color: rgb(255, 106, 0);
+}
+
+.three {
+  color: rgb(251, 255, 120);
+}
+
+.four {
+  color: rgb(255, 255, 0);
+}
+
+.five {
+  color: rgb(24, 159, 14);
+}
+</style>
 
 </html>

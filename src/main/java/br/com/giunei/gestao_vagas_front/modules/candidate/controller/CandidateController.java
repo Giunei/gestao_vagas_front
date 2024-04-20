@@ -56,6 +56,11 @@ public class CandidateController {
         return "candidate/login";
     }
 
+    @GetMapping("/teste")
+    public String teste() {
+        return "candidate/starsPage";
+    }
+
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("candidate", new CreateCandidateDTO());
@@ -134,7 +139,8 @@ public class CandidateController {
 
     @PostMapping("/jobs/apply")
     @PreAuthorize("hasRole('CANDIDATE')")
-    public String applyJob(@RequestParam("jobId") UUID jobId) {
+    public String applyJob(@RequestParam("jobId") UUID jobId, @RequestParam("rating") Integer num) {
+        System.out.println("Avaliação: " + num);
         this.applyJobService.execute(getToken(), jobId);
         return "redirect:/candidate/jobs";
     }

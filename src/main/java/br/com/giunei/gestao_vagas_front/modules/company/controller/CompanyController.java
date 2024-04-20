@@ -1,10 +1,12 @@
 package br.com.giunei.gestao_vagas_front.modules.company.controller;
 
+import br.com.giunei.gestao_vagas_front.modules.candidate.dto.JobDTO;
 import br.com.giunei.gestao_vagas_front.modules.candidate.dto.Token;
 import br.com.giunei.gestao_vagas_front.modules.company.dto.CreateCompanyDTO;
 import br.com.giunei.gestao_vagas_front.modules.company.dto.CreateJobsDTO;
 import br.com.giunei.gestao_vagas_front.modules.company.service.CreateCompanyService;
 import br.com.giunei.gestao_vagas_front.modules.company.service.CreateJobService;
+import br.com.giunei.gestao_vagas_front.modules.company.service.ListAllJobsCompanyService;
 import br.com.giunei.gestao_vagas_front.modules.company.service.LoginCompanyService;
 import br.com.giunei.gestao_vagas_front.utils.ErrorMessage;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/company")
 public class CompanyController {
@@ -37,6 +41,9 @@ public class CompanyController {
     private CreateJobService createJobService;
 
     private final String COMPANY = "company";
+
+    @Autowired
+    private ListAllJobsCompanyService listAllJobsCompanyService;
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -74,7 +81,6 @@ public class CompanyController {
             SecurityContext context = SecurityContextHolder.getContext();
             session.setAttribute("SPRING_SECURITY_CONTEXT", context);
             session.setAttribute("token", token);
-            System.out.println("token: " + grants);
 
             return "redirect:/company/jobs";
 
@@ -96,7 +102,24 @@ public class CompanyController {
     public String createJobs(CreateJobsDTO jobs) {
         String result = this.createJobService.execute(jobs, getToken());
         System.out.println(result);
-        return "redirect:/company/jobs";
+        return "redirect:/company/jobs/list";
+    }
+
+    @GetMapping("/jobs/list")
+    @PreAuthorize("hasRole('COMPANY')")
+    public String list(Model model) {
+        List<JobDTO> result = this.listAllJobsCompanyService.execute(getToken());
+        model.addAttribute("jobs", result);
+        return "company/list";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        SecurityContext context = SecurityContextHolder.getContext();
+        session.setAttribute("SPRING_SECURITY_CONTEXT", context);
+        session.setAttribute("token", null);
+        return "redirect:/company/login";
     }
 
     private String getToken() {
