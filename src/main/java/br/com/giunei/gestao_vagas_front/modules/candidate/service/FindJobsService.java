@@ -28,7 +28,8 @@ public class FindJobsService {
         String url = hostAPIGestaoVagas.concat("/candidate/jobs");
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
-                .queryParam("filter", filter);
+                .queryParam("filter", filter)
+                .queryParam("specification", "");
 
         ParameterizedTypeReference<List<JobDTO>> responseType =
                 new ParameterizedTypeReference<>() {

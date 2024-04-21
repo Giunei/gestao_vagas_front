@@ -28,10 +28,12 @@
 <div class="container mx-auto mt-24 text-center">
     <form>
         <input type="text" name="filter" class="bg-gray-50 text-gray-500 rounded w-96 p-3
-            focus:outline-none
-            " placeholder="Busca de vaga"/>
+            focus:outline-none" placeholder="Busca de vaga"/>
 
         <button class="bg-green-600 hover:bg-green-500 text-white w-24 p-3 ml-2 rounded">Buscar</button>
+
+        <button name="specification" th:value="data" class="bg-green-600 hover:bg-green-500 text-white w-24 p-3 ml-2 rounded">+ Recentes</button>
+        <button name="specification" th:value="rating" class="bg-green-600 hover:bg-green-500 text-white w-24 p-3 ml-2 rounded">Melhores vagas</button>
     </form>
 
 
@@ -49,48 +51,55 @@
 
                 <h2 class="mt-4 text-sky-500 flex justify-center">Avalie o que achou da descrição da vaga!</h2>
 
+                <script th:inline="javascript">
+                    var jobId = /*[[${job.id}]]*/ null;
+                    var rating = /*[[${job.id}]]*/ null;
+                </script>
+
                 <div class="flex justify-center pt-2">
                     <br/>
                     <br/>
-                    <span onclick="avaliar(1)" class="star">★</span>
-                    <span onclick="avaliar(2)" class="star">★</span>
-                    <span onclick="avaliar(3)" class="star">★</span>
-                    <span onclick="avaliar(4)" class="star">★</span>
-                    <span onclick="avaliar(5)" class="star">★</span>
-
+                    <span onclick="avaliar(1, this.classList)" data-id="[[${job.id}]]" th:attr="class='star' + ${job.id}">★</span>
+                    <span onclick="avaliar(2, this.classList)" data-id="[[${job.id}]]" th:attr="class='star' + ${job.id}">★</span>
+                    <span onclick="avaliar(3, this.classList)" data-id="[[${job.id}]]" th:attr="class='star' + ${job.id}">★</span>
+                    <span onclick="avaliar(4, this.classList)" data-id="[[${job.id}]]" th:attr="class='star' + ${job.id}">★</span>
+                    <span onclick="avaliar(5, this.classList)" data-id="[[${job.id}]]" th:attr="class='star' + ${job.id}">★</span>
                 </div>
 
                 <script th:inline="javascript">
-                    function avaliar(num) {
-                        let stars = document.getElementsByClassName("star");
-                        remove();
+                    
+                    function avaliar(num, id) {    
+                        let className = Array.from(id).find(cls => cls.startsWith('star'));
+                        let idReplace = className.replace('star', '');                
+                        remove(idReplace);                    
+                        let stars = document.getElementsByClassName("star" + idReplace);
                         for (let i = 0; i < num; i++) {
                             if (num == 1) cls = "one";
                             else if (num == 2) cls = "two";
                             else if (num == 3) cls = "three";
                             else if (num == 4) cls = "four";
                             else if (num == 5) cls = "five";
-                            stars[i].className = "star " + cls;
-                        }
-                        let ratingInput = document.getElementById("rating");
-                        ratingInput.value = num;
-                    }
-                </script>
-                <script th:inline="javascript">
-                    function remove() {
-                        let stars = document.getElementsByClassName("star");
 
-                        let i = 0;
-                        while (i < 5) {
-                            stars[i].className = "star";
-                            i++;
+                            stars[i].className = "star" + idReplace + " " + cls;
+                        }
+                        
+                        let ratingInput = document.getElementById("rating");
+
+                        ratingInput.value = num;
+                        alert(ratingInput.value);
+                    }
+
+                    function remove(id) {    
+                        let stars = document.getElementsByClassName("star" + id);
+                        for (let i = 0; i < 5; i++) {
+                            stars[i].className = "star" + id;
                         }
                     }
                 </script>
 
                 <div class="grid justify-items-center">
                     <button
-                            class="bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded mt-4">Aplicar
+                        class="bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded mt-4">Aplicar
                     </button>
                 </div>
             </div>
@@ -102,30 +111,30 @@
 </body>
 
 <style>
-.star {
-  font-size: 5vh;
-  cursor: pointer;
-}
+    span[class^="star"] {
+      font-size: 5vh;
+      cursor: pointer;
+    }
 
-.one {
-  color: rgb(255, 0, 0);
-}
+    .one {
+      color: rgb(255, 0, 0);
+    }
 
-.two {
-  color: rgb(255, 106, 0);
-}
+    .two {
+      color: rgb(255, 106, 0);
+    }
 
-.three {
-  color: rgb(251, 255, 120);
-}
+    .three {
+      color: rgb(251, 255, 120);
+    }
 
-.four {
-  color: rgb(255, 255, 0);
-}
+    .four {
+      color: rgb(255, 255, 0);
+    }
 
-.five {
-  color: rgb(24, 159, 14);
-}
+    .five {
+      color: rgb(24, 159, 14);
+    }
 </style>
 
 </html>
