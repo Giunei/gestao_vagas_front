@@ -18,7 +18,7 @@ public class FindJobsService {
     @Value("${host.api.gestao.vagas}")
     private String hostAPIGestaoVagas;
 
-    public List<JobDTO> execute(String token, String filter) {
+    public List<JobDTO> execute(String token, String filter, String specification) {
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
@@ -29,7 +29,7 @@ public class FindJobsService {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("filter", filter)
-                .queryParam("specification", "");
+                .queryParam("specification", specification);
 
         ParameterizedTypeReference<List<JobDTO>> responseType =
                 new ParameterizedTypeReference<>() {

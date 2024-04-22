@@ -115,11 +115,10 @@ public class CandidateController {
 
     @GetMapping("/jobs")
     @PreAuthorize("hasRole('CANDIDATE')")
-    public String jobs(Model model, String filter, Integer rating) {
+    public String jobs(Model model, String filter, String specification) {
         try {
-            System.out.println(rating);
             if (filter != null) {
-                List<JobDTO> jobs = this.findJobsService.execute(getToken(), filter);
+                List<JobDTO> jobs = this.findJobsService.execute(getToken(), filter, specification);
                 model.addAttribute("jobs", jobs);
             }
 

@@ -87,6 +87,11 @@
 
                         ratingInput.value = num;
                         alert(ratingInput.value);
+
+                        let jobIdInput = document.querySelector('input[name="jobId"]');
+                        if (jobIdInput) {
+                            jobIdInput.value = idReplace;
+                        }
                     }
 
                     function remove(id) {    
