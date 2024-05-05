@@ -1,11 +1,14 @@
 package br.com.giunei.gestao_vagas_front.modules.company.controller;
 
+import br.com.giunei.gestao_vagas_front.modules.candidate.dto.ApplyJobDTO;
+import br.com.giunei.gestao_vagas_front.modules.candidate.dto.CandidateDTO;
 import br.com.giunei.gestao_vagas_front.modules.candidate.dto.JobDTO;
 import br.com.giunei.gestao_vagas_front.modules.candidate.dto.Token;
 import br.com.giunei.gestao_vagas_front.modules.company.dto.CreateCompanyDTO;
 import br.com.giunei.gestao_vagas_front.modules.company.dto.CreateJobsDTO;
 import br.com.giunei.gestao_vagas_front.modules.company.service.CreateCompanyService;
 import br.com.giunei.gestao_vagas_front.modules.company.service.CreateJobService;
+import br.com.giunei.gestao_vagas_front.modules.company.service.ListAllAppliedsJobsService;
 import br.com.giunei.gestao_vagas_front.modules.company.service.ListAllJobsCompanyService;
 import br.com.giunei.gestao_vagas_front.modules.company.service.LoginCompanyService;
 import br.com.giunei.gestao_vagas_front.utils.ErrorMessage;
@@ -26,6 +29,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/company")
@@ -39,6 +43,9 @@ public class CompanyController {
 
     @Autowired
     private CreateJobService createJobService;
+
+    @Autowired
+    private ListAllAppliedsJobsService listAllAppliedsJobsService;
 
     private final String COMPANY = "company";
 
@@ -111,6 +118,14 @@ public class CompanyController {
         List<JobDTO> result = this.listAllJobsCompanyService.execute(getToken());
         model.addAttribute("jobs", result);
         return "company/list";
+    }
+
+    @GetMapping("/appliedsJobs")
+    @PreAuthorize("hasRole('COMPANY')")
+    public String appliedsJobs(Model model, UUID jobId) {
+        List<CandidateDTO> candidates = this.listAllAppliedsJobsService.execute(getToken(), jobId).stream().map(ApplyJobDTO::getCandidate).toList();
+        model.addAttribute("candidates", candidates);
+        return "company/jobsApplied";
     }
 
     @GetMapping("/logout")

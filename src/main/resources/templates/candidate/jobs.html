@@ -86,7 +86,6 @@
                         let ratingInput = document.getElementById("rating");
 
                         ratingInput.value = num;
-                        alert(ratingInput.value);
 
                         let jobIdInput = document.querySelector('input[name="jobId"]');
                         if (jobIdInput) {
@@ -106,6 +105,7 @@
                     <button
                         class="bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded mt-4">Aplicar
                     </button>
+                    <p class="text-red-400" th:if="${error_message}" th:text="${error_message}"></p>
                 </div>
             </div>
         </form>

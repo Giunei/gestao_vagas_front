@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Cadastro de Vagas</title>
+    <title>Candidatos para a vaga</title>
 </head>
 
 <body class="bg-white h-screen flex flex-col">
@@ -28,26 +28,17 @@
                 <thead>
                 <tr class="bg-gray-200">
                     <th class="text-left py-2 px-4">ID</th>
-                    <th class="text-left py-2 px-4">Descrição</th>
-                    <th class="text-left py-2 px-4">Benefícios</th>
-                    <th class="text-left py-2 px-4">Nível</th>
-                    <th class="text-left py-2 px-4">-</th>
+                    <th class="text-left py-2 px-4">E-mail</th>
+                    <th class="text-left py-2 px-4">Nome</th>
+                    <th class="text-left py-2 px-4">LinkedIn</th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="job: ${jobs}">
-                        <td class="border px-4 py-2" th:text="${job.id}"></td>
-                        <td class="border px-4 py-2" th:text="${job.description}"></td>
-                        <td class="border px-4 py-2" th:text="${job.benefits}"></td>
-
-                        <td class="border px-4 py-2" th:text="${job.level}"></td>
-                        <td class="border px-4 py-2">
-                            <div>
-                                <a th:href="@{/company/appliedsJobs(jobId=${job.id})}" class="block text-center underline underline-offset-2 hover:text-blue-600">
-                                    Ver candidatos
-                                </a>
-                            </div>
-                        </td>
+                    <tr th:each="candidate: ${candidates}">
+                        <td class="border px-4 py-2" th:text="${candidate.id}"></td>
+                        <td class="border px-4 py-2" th:text="${candidate.email}"></td>
+                        <td class="border px-4 py-2" th:text="${candidate.name}"></td>
+                        <td class="border px-4 py-2" th:text="${candidate.linkedInURL}"></td>
                     </tr>
                 </tbody>
             </table>

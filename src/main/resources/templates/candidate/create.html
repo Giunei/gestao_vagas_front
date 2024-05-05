@@ -36,8 +36,13 @@
         <input id="confirmPassword" type="password" name="confirmPassword" class="bg-gray-300 text-amber-600 text-xd
             rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
                placeholder="Confirme sua senha" >
-        <textarea name="description" placeholder="Digite uma breve descrição sobre você" 
-            th:field="*{description}"    
+        <input type="text" name="linkedInURL"
+               th:field="*{linkedInURL}"
+               class="bg-gray-300 text-amber-600 text-xd
+            rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"
+               placeholder="Link do seu perfil LinkedIn">
+        <textarea name="description" placeholder="Digite uma breve descrição sobre você"
+            th:field="*{description}"
             class="bg-gray-300 text-amber-600 text-xd
             rounded w-96 block p-2 focus:outline-none focus:ring-green-600 focus:ring-2 placeholder-gray-900"></textarea>
 

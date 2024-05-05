@@ -66,7 +66,6 @@ public class CandidateController {
     public String save(Model model, CreateCandidateDTO candidate) {
         try {
             this.createCandidateService.execute(candidate);
-
         } catch (HttpClientErrorException ex) {
             model.addAttribute("error_message", ErrorMessage.formatErrorMessage(ex.getResponseBodyAsString()));
         }
@@ -130,10 +129,15 @@ public class CandidateController {
 
     @PostMapping("/jobs/apply")
     @PreAuthorize("hasRole('CANDIDATE')")
-    public String applyJob(@RequestParam("jobId") UUID jobId, @RequestParam("rating") Integer num) {
-        System.out.println("Avaliação: " + num);
-        this.applyJobService.execute(getToken(), jobId, num);
-        return "redirect:/candidate/jobs";
+    public String applyJob(RedirectAttributes redirectAttributes, Model model, @RequestParam("jobId") UUID jobId, @RequestParam("rating") Integer num,
+                            String filter, String specification) {
+        try {
+            this.applyJobService.execute(getToken(), jobId, num);
+            return "redirect:/candidate/jobs";
+        } catch (HttpClientErrorException ex) {
+            redirectAttributes.addFlashAttribute("error_message", "Usuário/Senha incorretos");
+        }
+        return "redirect:/candidate/jobs?filter="+filter+"specification="+specification;        
     }
 
     private String getToken() {
