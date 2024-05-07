@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -18,4 +19,5 @@ public class ProfileUserDTO {
     private String description;
     private String username;
     private String name;
+    private List<String> vagasAplicadas;
 }
